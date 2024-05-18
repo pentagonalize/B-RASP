@@ -64,326 +64,342 @@
         </div>
     </div>
 
-    <div>
-        <div style="display: flex; justify-content: center;">
-            <div style="text-align: left;">
-                <p>NOTE: the javascript parser uses "not", "&", and "|" as boolean operations. </p>
-                <div>
-                    <label for="initial-symbol">Symbol:</label>
-                    <input type="text" id="initial-symbol" style="width: 20px;">
-                    <button onclick="addInitialOperation()">Add Initial Operation</button>
+    <div style="display: flex; justify-content: center;">
+        <div style="text-align: left;  width:1000px;">
+            <p>NOTE: the javascript parser uses "not", "&", and "|" as boolean operations. </p>
+            <div>
+                <div style="border:#ccc 1px solid; padding:10px;">
+                    <p> <b>Add an Initial Operation by inputting a symbol</b></p>
+                    <div style="padding:10px;">
+                        <!-- <label for=" initial-symbol">Symbol:</label> -->
+
+                        Q_<input type="text" id="initial-symbol" style="width: 20px;">(i)
+                        <button onclick="addInitialOperation()">Add Initial Operation</button>
+                    </div>
                 </div>
-                <div>
-                    <label for="boolean-name">Name:</label>
-                    <input type="text" id="boolean-name" style="width: 20px;">
-                    <label for="boolean-expression">Expression:</label>
-                    <input type="text" id="boolean-expression" style="width: 100px;">
-                    <button onclick="addBooleanOperation()">Add Boolean Operation</button>
+                <div style="border:#ccc 1px solid; padding:10px;">
+                    <p> <b>Add a Boolean Operation by inputting a name and Boolean expression</b></p>
+                    <div style="padding:10px;">
+                        <!-- <label for="boolean-name">Name:</label> -->
+                        <input type="text" id="boolean-name" style="width: 20px;">(i) :=
+                        <!-- <label for="boolean-expression">Expression:</label> -->
+                        <input type="text" id="boolean-expression" style="width: 100px;">
+                        <button onclick="addBooleanOperation()">Add Boolean Operation</button>
+                    </div>
                 </div>
-                <div>
-                    <label for="attention-name">Name:</label>
-                    <input type="text" id="attention-name" style="width: 20px;">
-                    <label for="attention-tie">Tie:</label>
-                    <select id="attention-tie">
-                        <option value="rightmost">Rightmost</option>
-                        <option value="leftmost">Leftmost</option>
-                    </select>
-                    <label for="attention-mask">Mask:</label>
-                    <select id="attention-mask">
-                        <option value="j<i">j &lt; i</option>
-                        <option value="i<j">i &lt; j</option>
-                        <option value="j<=i">j &lt;= i</option>
-                        <option value="i<=j">i &lt;= j</option>
-                        <option value="1">1</option>
-                    </select>
-                    <label for="score-expression">Score:</label>
-                    <input type="text" id="score-expression" style="width: 100px;">
-                    <label for="value-expression">Value:</label>
-                    <input type="text" id="value-expression" style="width: 100px;">
-                    <label for="default-expression">Default:</label>
-                    <input type="text" id="default-expression" style="width: 100px;">
-                    <button onclick="addAttentionOperation()">Add Attention Operation</button>
-                </div>
-                <div>
-                    <p></p>
-                    <p></p>
-                    Clear Operations:
-                    <button onclick="clearOperations()">Clear</button>
-                    <p> </p>
-                    Load Preset:
-                    <!-- Have a dropdown for presets including Dyck, and an "add" button to add -->
-                    <select id="presets">
-                        <option value="dyck">Dyck-1 of Depth 2</option>
-                    </select>
-                    <button onclick="loadPreset()">Load</button>
+                <div style="border:#ccc 1px solid; padding:10px;">
+                    <p> <b>Add an Attention Operation by inputting a name, choosing a tie-breaker, choosing a mask,
+                            inputting a Boolean score expression over i,j, inputting a Boolean value expression over
+                            i,j, and inputting a default vector over i.</b></p>
+                    <div style="padding:10px;">
+                        <!-- <label for="attention-name">Name:</label> -->
+                        <input type="text" id="attention-name" style="width: 20px;">(i) :=
+                        <!-- <label for="attention-tie">Tie:</label> -->
+                        <select id="attention-tie">
+                            <option value="rightmost">Rightmost</option>
+                            <option value="leftmost">Leftmost</option>
+                        </select>
+                        <!-- <label for="attention-mask">Mask:</label> -->
+                        [<select id="attention-mask">
+                            <option value="j<i">j &lt; i</option>
+                            <option value="i<j">i &lt; j</option>
+                            <option value="j<=i">j &lt;= i</option>
+                            <option value="i<=j">i &lt;= j</option>
+                            <option value="1">1</option>
+                        </select>,
+                        <!-- <label for="score-expression">Score:</label> -->
+                        <input type="text" id="score-expression" style="width: 100px;">]
+                        <!-- <label for="value-expression">Value:</label> -->
+                        <input type="text" id="value-expression" style="width: 100px;"> :
+                        <!-- <label for="default-expression">Default:</label> -->
+                        <input type="text" id="default-expression" style="width: 100px;">
+                        <p>
+                            <button onclick="addAttentionOperation()">Add Attention Operation</button>
+                        </p>
+                    </div>
                 </div>
             </div>
+            <div>
+                <p></p>
+                <p></p>
+                Clear Operations:
+                <button onclick="clearOperations()">Clear</button>
+                <p> </p>
+                Load Preset:
+                <!-- Have a dropdown for presets including Dyck, and an "add" button to add -->
+                <select id="presets">
+                    <option value="dyck">Dyck-1 of Depth 2</option>
+                </select>
+                <button onclick="loadPreset()">Load</button>
+            </div>
         </div>
-        <script type="text/javascript">
-            // Create a new BRASP instance
-            const brasp = new BRASP();
+    </div>
+    </div>
+    <script type="text/javascript">
+        // Create a new BRASP instance
+        const brasp = new BRASP();
 
-            // set num-rows to the number of operations + 1
-            document.documentElement.style.setProperty('--num-rows', brasp.getOperations().length + 1);
+        // set num-rows to the number of operations + 1
+        document.documentElement.style.setProperty('--num-rows', brasp.getOperations().length + 1);
 
-            function addDyck() {
-                // clear the operations
-                brasp.clearOperations();
-                // add the initial operations
-                brasp.addOperation(new InitialOperation("l"));
-                addRow();
-                brasp.addOperation(new InitialOperation("r"));
-                addRow();
-                brasp.addOperation(new AttentionOperation("P_l", "rightmost", "j<i", "1", "Q_l(j)", "0"));
-                addRow();
-                brasp.addOperation(new AttentionOperation("S_r", "leftmost", "i<j", "1", "Q_r(j)", "0"));
-                addRow();
-                brasp.addOperation(new BooleanOperation("I", "(Q_l(i) & S_r(i)) | (P_l(i) & Q_r(i))"));
-                addRow();
-                brasp.addOperation(new AttentionOperation("A_r", "leftmost", "i<j", "not I(j)", "Q_r(j)", "0"));
-                addRow();
-                brasp.addOperation(new AttentionOperation("B_l", "rightmost", "j<i", "not I(j)", "Q_l(j)", "0"));
-                addRow();
-                brasp.addOperation(new BooleanOperation("C", "I(i) | (Q_l(i) & A_r(i)) | (Q_r(i) & B_l(i))"));
-                addRow();
-                brasp.addOperation(new AttentionOperation("Y", "rightmost", "1", "not C(j)", "0", "1"));
-                addRow();
+        function addDyck() {
+            // clear the operations
+            brasp.clearOperations();
+            // add the initial operations
+            brasp.addOperation(new InitialOperation("l"));
+            addRow();
+            brasp.addOperation(new InitialOperation("r"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("P_l", "rightmost", "j<i", "1", "Q_l(j)", "0"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("S_r", "leftmost", "i<j", "1", "Q_r(j)", "0"));
+            addRow();
+            brasp.addOperation(new BooleanOperation("I", "(Q_l(i) & S_r(i)) | (P_l(i) & Q_r(i))"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("A_r", "leftmost", "i<j", "not I(j)", "Q_r(j)", "0"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("B_l", "rightmost", "j<i", "not I(j)", "Q_l(j)", "0"));
+            addRow();
+            brasp.addOperation(new BooleanOperation("C", "I(i) | (Q_l(i) & A_r(i)) | (Q_r(i) & B_l(i))"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("Y", "rightmost", "1", "not C(j)", "0", "1"));
+            addRow();
+        }
+
+        function loadPreset() {
+            const preset = document.getElementById('presets').value;
+            if (preset === 'dyck') {
+                addDyck();
             }
+        }
 
-            function loadPreset() {
-                const preset = document.getElementById('presets').value;
-                if (preset === 'dyck') {
-                    addDyck();
+        function syncGrid(input) {
+            const programContainer = document.getElementById('programContainer');
+            programContainer.innerHTML = ''; // Clear the grid
+            // add 5 empty items to populate all 5 rows
+
+            // TODO: make custom css classes so don't need to manually set borders each time
+            for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
+                const newItem = document.createElement('div');
+                newItem.classList.add('grid-item');
+                if (j === 0) {
+                    newItem.textContent = '';
+                    newItem.style.borderBottom = '2px solid black';
+                    newItem.style.borderRight = '2px solid black';
+                    // give each item an id, which is the row, column index
+                    newItem.id = `0-${j}`;
                 }
+                else {
+                    // if not the first row, add name of brasp operation
+                    newItem.style.borderRight = '2px solid black';
+                    // newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
+                    // add a button to remove the operation
+                    const removeButton = document.createElement('button');
+                    removeButton.textContent = 'Remove';
+                    removeButton.onclick = function () {
+                        brasp.removeOperationByName(brasp.getOperations()[j - 1].name);
+                        removeRow();
+                        const inputBox = document.getElementById('inputBox');
+                        syncGrid(inputBox);
+                    };
+                    newItem.insertBefore(removeButton, newItem.firstChild);
+                    // give each item an id, which is the row, column index
+                    newItem.id = `0-${j}`;
+                }
+                programContainer.appendChild(newItem);
+            }
+            for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
+                const newItem = document.createElement('div');
+                newItem.classList.add('grid-item');
+                if (j === 0) {
+                    newItem.textContent = '';
+                    newItem.style.borderBottom = '2px solid black';
+                    newItem.style.borderRight = 'none';
+                    // give each item an id, which is the row, column index
+                    newItem.id = `0-${j}`;
+                }
+                else {
+                    // if not the first row, add name of brasp operation
+                    newItem.textContent = "\n" + brasp.getOperations()[j - 1].head();
+                    newItem.style.borderRight = 'none';
+                    newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
+                    newItem.style.textAlign = 'right'; // add this line to align the text to the right
+                    // give each item an id, which is the row, column index
+                    newItem.id = `0-${j}`;
+                }
+                programContainer.appendChild(newItem);
             }
 
-            function syncGrid(input) {
-                const programContainer = document.getElementById('programContainer');
-                programContainer.innerHTML = ''; // Clear the grid
-                // add 5 empty items to populate all 5 rows
+            for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
+                const newItem = document.createElement('div');
+                newItem.classList.add('grid-item');
+                if (j === 0) {
+                    newItem.textContent = '';
+                    newItem.style.borderBottom = '2px solid black';
+                    newItem.style.borderRight = 'none';
+                    newItem.style.borderLeft = 'none';
+                    newItem.style.minWidth = '0'; // set minimal width to 0
+                    // give each item an id, which is the row, column index
+                    newItem.id = `0-${j}`;
+                }
+                else {
+                    // if not the first row, add name of brasp operation
+                    // if operation is an initial operation, don't put a := in front
+                    newItem.textContent = brasp.getOperations()[j - 1].type == "initial" ? "" : ":=";
+                    newItem.style.borderRight = 'none';
+                    newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
+                    newItem.style.textAlign = 'center'; // add this line to align the text to the right
+                    newItem.style.minWidth = '0'; // set minimal width to 0
+                    newItem.style.borderLeft = 'none'; // override the left border
+                    newItem.style.borderRight = 'none'; // override the right border
+                    // give each item an id, which is the row, column index
+                    newItem.id = `0-${j}`;
+                }
+                programContainer.appendChild(newItem);
+            }
 
-                // TODO: make custom css classes so don't need to manually set borders each time
-                for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
+            for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
+                const newItem = document.createElement('div');
+                newItem.classList.add('grid-item');
+                if (j === 0) {
+                    newItem.textContent = '';
+                    newItem.style.borderBottom = '2px solid black';
+                    newItem.style.borderRight = '2px solid black';
+                    newItem.style.borderLeft = 'none';
+                    // give each item an id, which is the row, column index
+                    newItem.id = `0-${j}`;
+                }
+                else {
+                    // if not the first row, add name of brasp operation
+                    newItem.textContent = "\n" + brasp.getOperations()[j - 1].body();
+                    newItem.style.borderLeft = 'none';
+                    newItem.style.borderRight = '2px solid black';
+                    newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
+                    newItem.style.textAlign = 'left'; // add this line to align the text to the right
+                    // give each item an id, which is the row, column index
+                    newItem.id = `0-${j}`;
+                }
+                programContainer.appendChild(newItem);
+            }
+
+
+            // the input section
+            const inputValue = input.value.trim();
+            // split the input value into an array of characters
+            inputList = inputValue.split('');
+            console.log(inputList);
+            const gridContainer = document.getElementById('gridContainer');
+            gridContainer.innerHTML = ''; // Clear the grid
+            // if the input is empty, add empty rows to the grid
+            if (inputValue === '') {
+                const newColumn = document.createElement('div');
+                newColumn.classList.add('grid-item');
+                newColumn.style.borderBottom = '2px solid black';
+                newColumn.textContent = '-';
+                gridContainer.appendChild(newColumn);
+
+                // Add the rest of the items to populate the grid
+                for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')) - 1; j++) {
                     const newItem = document.createElement('div');
                     newItem.classList.add('grid-item');
-                    if (j === 0) {
-                        newItem.textContent = '';
-                        newItem.style.borderBottom = '2px solid black';
-                        newItem.style.borderRight = '2px solid black';
-                        // give each item an id, which is the row, column index
-                        newItem.id = `0-${j}`;
-                    }
-                    else {
-                        // if not the first row, add name of brasp operation
-                        newItem.style.borderRight = '2px solid black';
-                        newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
-                        // add a button to remove the operation
-                        const removeButton = document.createElement('button');
-                        removeButton.textContent = 'Remove';
-                        removeButton.onclick = function () {
-                            brasp.removeOperationByName(brasp.getOperations()[j - 1].name);
-                            removeRow();
-                            const inputBox = document.getElementById('inputBox');
-                            syncGrid(inputBox);
-                        };
-                        newItem.insertBefore(removeButton, newItem.firstChild);
-                        // give each item an id, which is the row, column index
-                        newItem.id = `0-${j}`;
-                    }
-                    programContainer.appendChild(newItem);
+                    newItem.textContent = '-';
+                    newItem.style.backgroundColor = brasp.getOperations()[j].color;
+                    // give each item an id, which is the row, column index
+                    newItem.id = `${1}-${j}`;
+                    gridContainer.appendChild(newItem);
                 }
-                for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
+
+                return;
+            }
+
+            // populate the grid with the input value
+            trace = brasp.execute(inputList);
+            operations_names = brasp.getOperations().map(operation => operation.name);
+            for (let i = 0; i < inputValue.length; i++) {
+                const newColumn = document.createElement('div');
+                newColumn.classList.add('grid-item');
+                newColumn.style.borderBottom = '2px solid black';
+                newColumn.textContent = inputValue[i];
+                gridContainer.appendChild(newColumn);
+
+                // Add the rest of the items to populate the grid
+                for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')) - 1; j++) {
                     const newItem = document.createElement('div');
                     newItem.classList.add('grid-item');
-                    if (j === 0) {
-                        newItem.textContent = '';
-                        newItem.style.borderBottom = '2px solid black';
-                        newItem.style.borderRight = 'none';
-                        // give each item an id, which is the row, column index
-                        newItem.id = `0-${j}`;
-                    }
-                    else {
-                        // if not the first row, add name of brasp operation
-                        newItem.textContent = "\n" + brasp.getOperations()[j - 1].head();
-                        newItem.style.borderRight = 'none';
-                        newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
-                        newItem.style.textAlign = 'right'; // add this line to align the text to the right
-                        // give each item an id, which is the row, column index
-                        newItem.id = `0-${j}`;
-                    }
-                    programContainer.appendChild(newItem);
-                }
-
-                for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
-                    const newItem = document.createElement('div');
-                    newItem.classList.add('grid-item');
-                    if (j === 0) {
-                        newItem.textContent = '';
-                        newItem.style.borderBottom = '2px solid black';
-                        newItem.style.borderRight = 'none';
-                        newItem.style.borderLeft = 'none';
-                        newItem.style.minWidth = '0'; // set minimal width to 0
-                        // give each item an id, which is the row, column index
-                        newItem.id = `0-${j}`;
-                    }
-                    else {
-                        // if not the first row, add name of brasp operation
-                        // if operation is an initial operation, don't put a := in front
-                        newItem.textContent = brasp.getOperations()[j - 1].type == "initial" ? "" : ":=";
-                        newItem.style.borderRight = 'none';
-                        newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
-                        newItem.style.textAlign = 'center'; // add this line to align the text to the right
-                        newItem.style.minWidth = '0'; // set minimal width to 0
-                        newItem.style.borderLeft = 'none'; // override the left border
-                        newItem.style.borderRight = 'none'; // override the right border
-                        // give each item an id, which is the row, column index
-                        newItem.id = `0-${j}`;
-                    }
-                    programContainer.appendChild(newItem);
-                }
-
-                for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
-                    const newItem = document.createElement('div');
-                    newItem.classList.add('grid-item');
-                    if (j === 0) {
-                        newItem.textContent = '';
-                        newItem.style.borderBottom = '2px solid black';
-                        newItem.style.borderRight = '2px solid black';
-                        newItem.style.borderLeft = 'none';
-                        // give each item an id, which is the row, column index
-                        newItem.id = `0-${j}`;
-                    }
-                    else {
-                        // if not the first row, add name of brasp operation
-                        newItem.textContent = "\n" + brasp.getOperations()[j - 1].body();
-                        newItem.style.borderLeft = 'none';
-                        newItem.style.borderRight = '2px solid black';
-                        newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
-                        newItem.style.textAlign = 'left'; // add this line to align the text to the right
-                        // give each item an id, which is the row, column index
-                        newItem.id = `0-${j}`;
-                    }
-                    programContainer.appendChild(newItem);
-                }
-
-
-                // the input section
-                const inputValue = input.value.trim();
-                // split the input value into an array of characters
-                inputList = inputValue.split('');
-                console.log(inputList);
-                const gridContainer = document.getElementById('gridContainer');
-                gridContainer.innerHTML = ''; // Clear the grid
-                // if the input is empty, add empty rows to the grid
-                if (inputValue === '') {
-                    const newColumn = document.createElement('div');
-                    newColumn.classList.add('grid-item');
-                    newColumn.style.borderBottom = '2px solid black';
-                    newColumn.textContent = '-';
-                    gridContainer.appendChild(newColumn);
-
-                    // Add the rest of the items to populate the grid
-                    for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')) - 1; j++) {
-                        const newItem = document.createElement('div');
-                        newItem.classList.add('grid-item');
-                        newItem.textContent = '-';
-                        newItem.style.backgroundColor = brasp.getOperations()[j].color;
-                        // give each item an id, which is the row, column index
-                        newItem.id = `${1}-${j}`;
-                        gridContainer.appendChild(newItem);
-                    }
-
-                    return;
-                }
-
-                // populate the grid with the input value
-                trace = brasp.execute(inputList);
-                operations_names = brasp.getOperations().map(operation => operation.name);
-                for (let i = 0; i < inputValue.length; i++) {
-                    const newColumn = document.createElement('div');
-                    newColumn.classList.add('grid-item');
-                    newColumn.style.borderBottom = '2px solid black';
-                    newColumn.textContent = inputValue[i];
-                    gridContainer.appendChild(newColumn);
-
-                    // Add the rest of the items to populate the grid
-                    for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')) - 1; j++) {
-                        const newItem = document.createElement('div');
-                        newItem.classList.add('grid-item');
-                        value = trace[operations_names[j]][i];
-                        newItem.textContent = value;
-                        newItem.style.backgroundColor = brasp.getOperations()[j].color;
-                        // give each item an id, which is the row, column index
-                        newItem.id = `${i + 1}-${j}`;
-                        gridContainer.appendChild(newItem);
-                    }
+                    value = trace[operations_names[j]][i];
+                    newItem.textContent = value;
+                    newItem.style.backgroundColor = brasp.getOperations()[j].color;
+                    // give each item an id, which is the row, column index
+                    newItem.id = `${i + 1}-${j}`;
+                    gridContainer.appendChild(newItem);
                 }
             }
+        }
 
-            function addRow() {
-                const root = document.documentElement;
-                root.style.setProperty('--num-rows', parseInt(getComputedStyle(root).getPropertyValue('--num-rows')) + 1);
+        function addRow() {
+            const root = document.documentElement;
+            root.style.setProperty('--num-rows', parseInt(getComputedStyle(root).getPropertyValue('--num-rows')) + 1);
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+        }
+
+        function removeRow() {
+            const root = document.documentElement;
+            // don't allow fewer than 1 row
+            if (parseInt(getComputedStyle(root).getPropertyValue('--num-rows')) > 1) {
+                root.style.setProperty('--num-rows', parseInt(getComputedStyle(root).getPropertyValue('--num-rows')) - 1);
                 const inputBox = document.getElementById('inputBox');
                 syncGrid(inputBox);
             }
+        }
 
-            function removeRow() {
-                const root = document.documentElement;
-                // don't allow fewer than 1 row
-                if (parseInt(getComputedStyle(root).getPropertyValue('--num-rows')) > 1) {
-                    root.style.setProperty('--num-rows', parseInt(getComputedStyle(root).getPropertyValue('--num-rows')) - 1);
-                    const inputBox = document.getElementById('inputBox');
-                    syncGrid(inputBox);
-                }
+        window.addEventListener('DOMContentLoaded', function () {
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+        });
+
+        function addInitialOperation() {
+            const initialSymbol = document.getElementById('initial-symbol').value;
+            const newInitialOperation = new InitialOperation(initialSymbol);
+            brasp.addOperation(newInitialOperation);
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+            addRow();
+        }
+
+        function addBooleanOperation() {
+            const booleanExpression = document.getElementById('boolean-expression').value;
+            const booleanName = document.getElementById('boolean-name').value;
+            const newBooleanOperation = new BooleanOperation(booleanName, booleanExpression);
+            brasp.addOperation(newBooleanOperation);
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+            addRow();
+        }
+
+        function addAttentionOperation() {
+            const attentionName = document.getElementById('attention-name').value;
+            const attentionTie = document.getElementById('attention-tie').value;
+            const attentionMask = document.getElementById('attention-mask').value;
+            const scoreExpression = document.getElementById('score-expression').value;
+            const valueExpression = document.getElementById('value-expression').value;
+            const defaultExpression = document.getElementById('default-expression').value;
+            const newAttentionOperation = new AttentionOperation(attentionName, attentionTie, attentionMask, scoreExpression, valueExpression, defaultExpression);
+            brasp.addOperation(newAttentionOperation);
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+            addRow();
+        }
+
+        function clearOperations() {
+            for (let i = 0; i < brasp.getOperations().length; i++) {
+                removeRow();
             }
-
-            window.addEventListener('DOMContentLoaded', function () {
-                const inputBox = document.getElementById('inputBox');
-                syncGrid(inputBox);
-            });
-
-            function addInitialOperation() {
-                const initialSymbol = document.getElementById('initial-symbol').value;
-                const newInitialOperation = new InitialOperation(initialSymbol);
-                brasp.addOperation(newInitialOperation);
-                const inputBox = document.getElementById('inputBox');
-                syncGrid(inputBox);
-                addRow();
-            }
-
-            function addBooleanOperation() {
-                const booleanExpression = document.getElementById('boolean-expression').value;
-                const booleanName = document.getElementById('boolean-name').value;
-                const newBooleanOperation = new BooleanOperation(booleanName, booleanExpression);
-                brasp.addOperation(newBooleanOperation);
-                const inputBox = document.getElementById('inputBox');
-                syncGrid(inputBox);
-                addRow();
-            }
-
-            function addAttentionOperation() {
-                const attentionName = document.getElementById('attention-name').value;
-                const attentionTie = document.getElementById('attention-tie').value;
-                const attentionMask = document.getElementById('attention-mask').value;
-                const scoreExpression = document.getElementById('score-expression').value;
-                const valueExpression = document.getElementById('value-expression').value;
-                const defaultExpression = document.getElementById('default-expression').value;
-                const newAttentionOperation = new AttentionOperation(attentionName, attentionTie, attentionMask, scoreExpression, valueExpression, defaultExpression);
-                brasp.addOperation(newAttentionOperation);
-                const inputBox = document.getElementById('inputBox');
-                syncGrid(inputBox);
-                addRow();
-            }
-
-            function clearOperations() {
-                for (let i = 0; i < brasp.getOperations().length; i++) {
-                    removeRow();
-                }
-                brasp.clearOperations();
-                const inputBox = document.getElementById('inputBox');
-                syncGrid(inputBox);
-            }
-        </script>
+            brasp.clearOperations();
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+        }
+    </script>
 
 </body>
 

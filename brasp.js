@@ -370,7 +370,7 @@ class AttentionOperation {
     }
 
     stringify() {
-        return this.name + "(i) := " + this.tie + " [" + this.mask + "," + this.score_expression + "] " + this.value_expression + " : " + this.default_expression;
+        return this.name + "(i) := " + this.tie + " [" + this.mask + ", " + this.score_expression + "] " + this.value_expression + " : " + this.default_expression;
     }
 
     head() {
@@ -378,6 +378,6 @@ class AttentionOperation {
     }
 
     body() {
-        return this.tie + " [" + this.mask + "," + this.score_expression + "] " + this.value_expression + " : " + this.default_expression;
+        return this.tie + " [" + this.mask + ", " + this.score_expression + "] " + this.value_expression + " : " + this.default_expression;
     }
 }
