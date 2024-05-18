@@ -196,17 +196,26 @@ class BRASP {
 
 class InitialOperation {
     constructor(symbol) {
-        // check that symbol is a single word and does not contain any special characters
-        if (symbol.match(/[^a-zA-Z0-9]/)) {
-            throw new Error('Invalid symbol');
+        // check that symbol is a single character
+        if (symbol.length !== 1) {
+            throw new Error('Symbol must be a single character');
         }
         this.name = "Q_" + symbol;
         this.symbol = symbol;
         this.color = "#FFCCCC";
+        this.type = "initial";
     }
 
     stringify() {
         return this.name + "(i)";
+    }
+
+    head() {
+        return this.name + "(i)";
+    }
+
+    body() {
+        return "";
     }
 }
 
@@ -241,10 +250,19 @@ class BooleanOperation {
         this.variables = variables;
         this.functions = functions;
         this.color = "#C6EFFC";
+        this.type = "boolean";
     }
 
     stringify() {
         return this.name + "(i) := " + this.expression;
+    }
+
+    head() {
+        return this.name + "(i)";
+    }
+
+    body() {
+        return this.expression;
     }
 }
 
@@ -346,11 +364,20 @@ class AttentionOperation {
         this.default_functions = default_functions;
 
         this.functions = score_functions.concat(value_functions).concat(default_functions);
-
         this.color = "#ffe6cc";
+
+        this.type = "attention";
     }
 
     stringify() {
         return this.name + "(i) := " + this.tie + " [" + this.mask + "," + this.score_expression + "] " + this.value_expression + " : " + this.default_expression;
+    }
+
+    head() {
+        return this.name + "(i)";
+    }
+
+    body() {
+        return this.tie + " [" + this.mask + "," + this.score_expression + "] " + this.value_expression + " : " + this.default_expression;
     }
 }
