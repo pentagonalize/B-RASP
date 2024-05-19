@@ -13,29 +13,20 @@
         .grid-container {
             display: grid;
             gap: 0;
-            /* Set gap to 0 to remove space between cells */
             grid-auto-flow: column;
-            /* Remove fixed column width */
-            /* grid-auto-columns: 100px; */
-            /* Allow column to increase to fit width of text */
-            grid-auto-columns: auto;
+            grid-template-columns: repeat(auto-fill, minmax(min-content, 1fr));
             grid-template-rows: repeat(var(--num-rows), 30px);
-            /* Set height of cells to 10px */
             overflow-x: auto;
+            width: fit-content;
         }
 
         .grid-item {
             background-color: #f2f2f2;
-            padding: 5;
+            padding: 5px;
             border: 1px solid #ccc;
-            /* Remove fixed width */
-            /* width: 10px; */
-            /* Set width to match grid auto column width */
             text-align: center;
-            /* Center the text */
             white-space: nowrap;
-            /* Prevent text from wrapping */
-            /* Add this line to allow cell to expand to fit content */
+            grid-auto-flow: column;
             display: inline-block;
             min-width: 20px;
         }
@@ -60,6 +51,7 @@
                         <!-- Have a dropdown for presets including Dyck, and an "add" button to add -->
                         <select id="presets">
                             <option value="dyck">Dyck-1 of Depth 2</option>
+                            <option value="stair3">Stair_3</option>
                         </select>
                         <button onclick="loadPreset()">Load</button>
                     </div>
@@ -135,12 +127,13 @@
                 </div>
                 <div style="display: flex; flex-direction: row;">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="grid-container" id="programContainer" style="width: 500px;"></div>
-                        <!-- Initially empty grid -->
+                        <div class="grid-container" id="editContainer" style="width: 100px;"></div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="grid-container" id="programContainer" style="width: 400px;"></div>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: center;">
                         <div class="grid-container" id="gridContainer" style="width: 500px;"></div>
-                        <!-- Initially empty grid -->
                     </div>
                 </div>
             </div>
@@ -157,7 +150,7 @@
         // set num-rows to the number of operations + 1
         document.documentElement.style.setProperty('--num-rows', brasp.getOperations().length + 1);
 
-        function addDyck() {
+        function addDyck1_depth2() {
             // clear the operations
             clearOperations();
             // add the initial operations
@@ -189,14 +182,46 @@
             programInput.value = brasp.getOperations().map(operation => operation.stringify()).join('\n');
         }
 
+        function addStair3() {
+            // clear the operations
+            clearOperations();
+            // add the initial operations
+            brasp.addOperation(new InitialOperation("a"));
+            addRow();
+            brasp.addOperation(new InitialOperation("b"));
+            addRow();
+            brasp.addOperation(new InitialOperation("c"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("A_2", "rightmost", "j<i", "Q_a(j) | Q_b(j)", "Q_a(i) & Q_a(j)", "0"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("A_3", "rightmost", "j<i", "Q_a(j) | Q_b(j)", "Q_a(i) & A_2(j)", "0"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("Y", "rightmost", "1", "A_3(j)", "1", "0"));
+            addRow();
+            // sync the grid
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+            // sync the programInput box
+            const programInput = document.getElementById('programInput');
+            // for each operation, add operation.stringify() to the programInput
+            programInput.value = brasp.getOperations().map(operation => operation.stringify()).join('\n');
+        }
+
+
         function loadPreset() {
             const preset = document.getElementById('presets').value;
             if (preset === 'dyck') {
-                addDyck();
+                addDyck1_depth2();
+            }
+            if (preset === 'stair3') {
+                addStair3();
             }
         }
 
         function syncGrid(input) {
+            // the program section
+            const editContainer = document.getElementById('editContainer');
+            editContainer.innerHTML = ''; // Clear the grid
             const programContainer = document.getElementById('programContainer');
             programContainer.innerHTML = ''; // Clear the grid
             // add 5 empty items to populate all 5 rows
@@ -237,7 +262,7 @@
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
-                programContainer.appendChild(newItem);
+                editContainer.appendChild(newItem);
             }
             for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
                 const newItem = document.createElement('div');
@@ -252,6 +277,11 @@
                 else {
                     // if not the first row, add name of brasp operation
                     newItem.textContent = "\n" + brasp.getOperations()[j - 1].head();
+                    newItem.style.display = 'block';
+                    newItem.style.whiteSpace = 'nowrap'; // Keep text in a single line
+                    newItem.style.overflow = 'auto'; // Enable scrolling
+                    newItem.style.maxWidth = '300px'; // Set a maximum width
+                    newItem.style.borderLeft = 'none';
                     newItem.style.borderRight = 'none';
                     newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
                     newItem.style.textAlign = 'right'; // add this line to align the text to the right
@@ -288,10 +318,10 @@
                 }
                 programContainer.appendChild(newItem);
             }
-
             for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
                 const newItem = document.createElement('div');
                 newItem.classList.add('grid-item');
+                // newItem.style.display = 'inline-block';
                 if (j === 0) {
                     newItem.textContent = '';
                     newItem.style.borderBottom = '2px solid black';
@@ -303,10 +333,15 @@
                 else {
                     // if not the first row, add name of brasp operation
                     newItem.textContent = "\n" + brasp.getOperations()[j - 1].body();
+                    newItem.style.display = 'block';
+                    newItem.style.whiteSpace = 'nowrap'; // Keep text in a single line
+                    newItem.style.overflow = 'auto'; // Enable scrolling
+                    newItem.style.minWidth = '100px'; // Set a minimum width
+                    newItem.style.maxWidth = '400px'; // Set a maximum width
+                    newItem.style.textAlign = 'left'; // Align the text to the left
                     newItem.style.borderLeft = 'none';
                     newItem.style.borderRight = '2px solid black';
                     newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
-                    newItem.style.textAlign = 'left'; // add this line to align the text to the right
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
@@ -325,14 +360,14 @@
                 const newColumn = document.createElement('div');
                 newColumn.classList.add('grid-item');
                 newColumn.style.borderBottom = '2px solid black';
-                newColumn.textContent = '-';
+                newColumn.textContent = '';
                 gridContainer.appendChild(newColumn);
 
                 // Add the rest of the items to populate the grid
                 for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')) - 1; j++) {
                     const newItem = document.createElement('div');
                     newItem.classList.add('grid-item');
-                    newItem.textContent = '-';
+                    newItem.textContent = '';
                     newItem.style.backgroundColor = brasp.getOperations()[j].color;
                     // give each item an id, which is the row, column index
                     newItem.id = `${1}-${j}`;
