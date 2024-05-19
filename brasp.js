@@ -28,6 +28,11 @@ class BRASP {
         return this.operations;
     }
 
+    // Method to get the list of operation names
+    getOperationNames() {
+        return this.operations.map(op => op.name);
+    }
+
     // Method to execute the operations on an input
     execute(input) {
         // Make sure input is a list of strings
@@ -43,7 +48,6 @@ class BRASP {
         // iterate over all operations
         for (let operation of this.operations) {
             // check if operation is an initial operation
-            console.log(operation);
             if (operation instanceof InitialOperation) {
                 // check if the symbol is in the input
                 let symbol = operation.symbol;
@@ -74,7 +78,6 @@ class BRASP {
                     let function_operation = trace[function_name];
                     scope[function_name] = function_operation;
                 }
-                console.log(scope);
                 for (let i = 0; i < n; i++) {
                     let localScope = {};
                     for (let functionName in scope) {
@@ -87,7 +90,6 @@ class BRASP {
                 trace[operation.name] = my_trace;
             }
             if (operation instanceof AttentionOperation) {
-                console.log("hi");
                 let score_expression = operation.score_expression;
                 let value_expression = operation.value_expression;
                 let default_expression = operation.default_expression;
@@ -102,7 +104,6 @@ class BRASP {
                     let function_operation = trace[function_name];
                     scope[function_name] = function_operation;
                 }
-                console.log(scope);
 
 
                 // first append the mask to the score expression
@@ -111,7 +112,6 @@ class BRASP {
                 // use regex to replace f(i) with f_i and f(j) with f_j
 
                 score_expression = score_expression.replace(/([a-zA-Z0-9_]+)\s*\(\s*i\s*\)/g, '$1_i').replace(/([a-zA-Z0-9_]+)\s*\(\s*j\s*\)/g, '$1_j');
-                console.log(score_expression);
 
                 value_expression = value_expression.replace(/([a-zA-Z0-9_]+)\s*\(\s*i\s*\)/g, '$1_i').replace(/([a-zA-Z0-9_]+)\s*\(\s*j\s*\)/g, '$1_j');
 
@@ -136,7 +136,6 @@ class BRASP {
                         let score = math.evaluate(score_expression, localScope);
                         scores.push(score);
                     }
-                    console.log(scores);
                     // check if all scores are 0
                     let allZero = true;
                     for (let score of scores) {
@@ -204,6 +203,7 @@ class InitialOperation {
         this.symbol = symbol;
         this.color = "#FFCCCC";
         this.type = "initial";
+        this.functions = [];
     }
 
     stringify() {
@@ -284,7 +284,6 @@ class AttentionOperation {
         let score_functions = [];
         try {
             let node = math.parse(score_expression);
-            console.log(score_expression);
             node.traverse(function (node) {
                 if (node.isSymbolNode) {
                     score_variables.push(node.name);
