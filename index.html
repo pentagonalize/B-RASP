@@ -591,9 +591,9 @@
             // then, clear the operations
             brasp.clearOperations();
             // next get input
-            const programInput = document.getElementById('programInput').value;
+            const programInput = document.getElementById('programInput');
             // separate into lines
-            const lines = programInput.split('\n');
+            const lines = programInput.value.split('\n');
             // for each line, parse the line and add the operation to the brasp instance
             for (let i = 0; i < lines.length; i++) {
                 const match = myGrammar.match(lines[i]);
@@ -611,6 +611,11 @@
                     addRow();
                 }
             }
+            // clear the programInput box
+            // then put the stringify of the operations in the programInput box
+            // this is to remove any extra spaces or newlines
+            programInput.value = brasp.getOperations().map(operation => operation.stringify()).join('\n');
+            // sync the grid
             const inputBox = document.getElementById('inputBox');
             syncGrid(inputBox);
         }
