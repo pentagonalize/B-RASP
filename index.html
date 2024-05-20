@@ -52,11 +52,24 @@
                         <select id="presets">
                             <option value="dyck">Dyck-1 of Depth 2</option>
                             <option value="stair3">Stair_3</option>
+                            <option value="ab_plus">(ab)^+</option>
                         </select>
                         <button onclick="loadPreset()">Load</button>
                     </div>
                     <p>NOTE: the javascript parser uses "not", "&", and "|" as boolean operations. </p>
                     <div>
+                        <div style="border:#ccc 1px solid; padding:10px;">
+                            <div style="display:flex;">
+                                <div style="font-size: 20px;">
+                                    Input:&nbsp;
+                                </div>
+                                <input type="text" id="inputBox" style="width: 400px; font-size: 20px;"
+                                    oninput="syncGrid(this)">
+                                <div style="font-size: 20px ; color:red;" id="recognition">
+                                    &nbsp;rejected
+                                </div>
+                            </div>
+                        </div>
                         <div style="border:#ccc 1px solid; padding:10px;">
                             <p><b>Write your program here, or use the templates below</b></p>
                             <textarea id="programInput" rows="15" style="width: 100%;"></textarea>
@@ -120,24 +133,19 @@
             </div>
         </div>
         <div style="display: flex; flex-direction: column; align-items: center;">
-            <div style="display: flex; flex-direction: column; align-items: center; margin: 0 auto;">
-                <div>
-                    Input: <input type="text" id="inputBox" style="width: 500px; font-size: 20px;"
-                        oninput="syncGrid(this)">
+            <div style="display: flex; flex-direction: row;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="grid-container" id="editContainer" style="width: 100px;"></div>
                 </div>
-                <div style="display: flex; flex-direction: row;">
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="grid-container" id="editContainer" style="width: 100px;"></div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="grid-container" id="programContainer" style="width: 400px;"></div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="grid-container" id="gridContainer" style="width: 500px;"></div>
-                    </div>
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="grid-container" id="programContainer" style="width: 400px;"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="grid-container" id="gridContainer" style="width: 500px;"></div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 
@@ -207,6 +215,30 @@
             programInput.value = brasp.getOperations().map(operation => operation.stringify()).join('\n');
         }
 
+        function add_ab_plus() {
+            // clear the operations
+            clearOperations();
+            // add the initial operations
+            brasp.addOperation(new InitialOperation("a"));
+            addRow();
+            brasp.addOperation(new InitialOperation("b"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("AB", "rightmost", "j<i", "1", "Q_a(j) & Q_b(i)", "0"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("BA", "leftmost", "i<j", "1", "Q_a(i) & Q_b(j)", "0"));
+            addRow();
+            brasp.addOperation(new BooleanOperation("I", "AB(i) | BA(i)"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("Y", "rightmost", "1", "not I(j)", "0", "1"));
+            addRow();
+            // sync the grid
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+            // sync the programInput box
+            const programInput = document.getElementById('programInput');
+            // for each operation, add operation.stringify() to the programInput
+            programInput.value = brasp.getOperations().map(operation => operation.stringify()).join('\n');
+        }
 
         function loadPreset() {
             const preset = document.getElementById('presets').value;
@@ -215,6 +247,9 @@
             }
             if (preset === 'stair3') {
                 addStair3();
+            }
+            if (preset === 'ab_plus') {
+                add_ab_plus();
             }
         }
 
@@ -373,8 +408,6 @@
                     newItem.id = `${1}-${j}`;
                     gridContainer.appendChild(newItem);
                 }
-
-                return;
             }
 
             // populate the grid with the input value
@@ -400,7 +433,24 @@
                 }
             }
 
+            // check if the input is accepted
+            // this is when last column of the last row of the grid is 1
+            // first check that the trace dictionary is not empty
+            if (Object.keys(trace).length > 0 && inputList.length > 0) {
+                // then check that the last column of the last row is 1
+                console.log(trace[operations_names[operations_names.length - 1]][inputList.length - 1]);
+                if (trace[operations_names[operations_names.length - 1]][inputList.length - 1] === 1) {
 
+                    console.log("accepted");
+                    document.getElementById('recognition').innerHTML = '&nbsp;accepted';
+                    document.getElementById('recognition').style.color = 'green';
+                }
+                else {
+                    console.log("rejected");
+                    document.getElementById('recognition').innerHTML = '&nbsp;rejected';
+                    document.getElementById('recognition').style.color = 'red';
+                }
+            }
         }
 
         function addRow() {
