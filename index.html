@@ -53,6 +53,7 @@
                             <option value="dyck">Dyck-1 of Depth 2</option>
                             <option value="stair3">Stair_3</option>
                             <option value="ab_plus">(ab)^+</option>
+                            <option value="BprecAnosuccC">{a,b,c}^*a{b,c}^*ba^*</option>
                         </select>
                         <button onclick="loadPreset()">Load</button>
                     </div>
@@ -240,6 +241,31 @@
             programInput.value = brasp.getOperations().map(operation => operation.stringify()).join('\n');
         }
 
+        function addBprecAnosuccC() {
+            clearOperations();
+            // add the initial operations
+            brasp.addOperation(new InitialOperation("a"));
+            addRow();
+            brasp.addOperation(new InitialOperation("b"));
+            addRow();
+            brasp.addOperation(new InitialOperation("c"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("P_a", "rightmost", "j<i", "Q_a(j)", "1", "0"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("S_c", "leftmost", "i<j", "Q_c(j)", "1", "0"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("Y", "rightmost", "1", "Q_b(j) & P_a(j) & not S_c(j)", "1", "0"));
+            addRow();
+
+            // sync the grid
+            const inputBox = document.getElementById('inputBox');
+            syncGrid(inputBox);
+            // sync the programInput box
+            const programInput = document.getElementById('programInput');
+            // for each operation, add operation.stringify() to the programInput
+            programInput.value = brasp.getOperations().map(operation => operation.stringify()).join('\n');
+        }
+
         function loadPreset() {
             const preset = document.getElementById('presets').value;
             if (preset === 'dyck') {
@@ -250,6 +276,9 @@
             }
             if (preset === 'ab_plus') {
                 add_ab_plus();
+            }
+            if (preset === 'BprecAnosuccC') {
+                addBprecAnosuccC();
             }
         }
 
