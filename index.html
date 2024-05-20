@@ -254,7 +254,9 @@
             addRow();
             brasp.addOperation(new AttentionOperation("S_c", "leftmost", "i<j", "Q_c(j)", "1", "0"));
             addRow();
-            brasp.addOperation(new AttentionOperation("Y", "rightmost", "1", "Q_b(j) & P_a(j) & not S_c(j)", "1", "0"));
+            brasp.addOperation(new BooleanOperation("I", "Q_b(i) & P_a(i) & not S_c(i)"));
+            addRow();
+            brasp.addOperation(new AttentionOperation("Y", "rightmost", "1", "I(j)", "1", "0"));
             addRow();
 
             // sync the grid
