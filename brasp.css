@@ -5,28 +5,20 @@
 .grid-container {
     display: grid;
     gap: 0;
-    /* Set gap to 0 to remove space between cells */
     grid-auto-flow: column;
-    /* Remove fixed column width */
-    /* grid-auto-columns: 100px; */
-    /* Allow column to increase to fit width of text */
-    grid-auto-columns: auto;
-    grid-template-rows: repeat(var(--num-rows), 1fr);
-    /* Add this line to create the specified number of rows */
+    grid-template-columns: repeat(auto-fill, minmax(min-content, 1fr));
+    grid-template-rows: repeat(var(--num-rows), 30px);
     overflow-x: auto;
+    width: fit-content;
 }
 
 .grid-item {
     background-color: #f2f2f2;
-    padding: 20px;
+    padding: 5px;
     border: 1px solid #ccc;
-    /* Remove fixed width */
-    /* width: 10px; */
-    /* Set width to match grid auto column width */
     text-align: center;
-    /* Center the text */
     white-space: nowrap;
-    /* Prevent text from wrapping */
-    /* Add this line to allow cell to expand to fit content */
+    grid-auto-flow: column;
     display: inline-block;
+    min-width: 20px;
 }
