@@ -271,21 +271,18 @@
                 const newItem = document.createElement('div');
                 newItem.classList.add('grid-item');
                 if (j === 0) {
+                    newItem.classList.add('remove-header');
                     const clearButton = document.createElement('button');
                     clearButton.textContent = 'Clear All';
                     clearButton.onclick = function () {
                         clearOperations();
                     };
                     newItem.insertBefore(clearButton, newItem.firstChild);
-                    newItem.style.borderBottom = '2px solid black';
-                    newItem.style.borderRight = '2px solid black';
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
                 else {
-                    // if not the first row, add name of brasp operation
-                    newItem.style.borderRight = '2px solid black';
-                    // newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
+                    newItem.classList.add('remove-cell');
                     // add a button to remove the operation
                     const removeButton = document.createElement('button');
                     removeButton.textContent = 'Remove';
@@ -309,23 +306,16 @@
                 const newItem = document.createElement('div');
                 newItem.classList.add('grid-item');
                 if (j === 0) {
+                    newItem.classList.add('lhs-header');
                     newItem.textContent = '';
-                    newItem.style.borderBottom = '2px solid black';
-                    newItem.style.borderRight = 'none';
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
                 else {
+                    newItem.classList.add('lhs-cell');
+                    newItem.classList.add(brasp.getOperations()[j - 1].type);
                     // if not the first row, add name of brasp operation
                     newItem.textContent = "\n" + brasp.getOperations()[j - 1].head();
-                    newItem.style.display = 'block';
-                    newItem.style.whiteSpace = 'nowrap'; // Keep text in a single line
-                    newItem.style.overflow = 'auto'; // Enable scrolling
-                    newItem.style.maxWidth = '300px'; // Set a maximum width
-                    newItem.style.borderLeft = 'none';
-                    newItem.style.borderRight = 'none';
-                    newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
-                    newItem.style.textAlign = 'right'; // add this line to align the text to the right
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
@@ -336,24 +326,16 @@
                 const newItem = document.createElement('div');
                 newItem.classList.add('grid-item');
                 if (j === 0) {
+                    newItem.classList.add('equals-header');
                     newItem.textContent = '';
-                    newItem.style.borderBottom = '2px solid black';
-                    newItem.style.borderRight = 'none';
-                    newItem.style.borderLeft = 'none';
-                    newItem.style.minWidth = '0'; // set minimal width to 0
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
                 else {
-                    // if not the first row, add name of brasp operation
+                    newItem.classList.add('equals-cell');
+                    newItem.classList.add(brasp.getOperations()[j - 1].type);
                     // if operation is an initial operation, don't put a := in front
                     newItem.textContent = brasp.getOperations()[j - 1].type == "initial" ? "" : ":=";
-                    newItem.style.borderRight = 'none';
-                    newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
-                    newItem.style.textAlign = 'center'; // add this line to align the text to the right
-                    newItem.style.minWidth = '0'; // set minimal width to 0
-                    newItem.style.borderLeft = 'none'; // override the left border
-                    newItem.style.borderRight = 'none'; // override the right border
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
@@ -362,27 +344,16 @@
             for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')); j++) {
                 const newItem = document.createElement('div');
                 newItem.classList.add('grid-item');
-                // newItem.style.display = 'inline-block';
                 if (j === 0) {
+                    newItem.classList.add('rhs-header');
                     newItem.textContent = '';
-                    newItem.style.borderBottom = '2px solid black';
-                    newItem.style.borderRight = '2px solid black';
-                    newItem.style.borderLeft = 'none';
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
                 else {
-                    // if not the first row, add name of brasp operation
+                    newItem.classList.add('rhs-cell');
+                    newItem.classList.add(brasp.getOperations()[j - 1].type);
                     newItem.textContent = "\n" + brasp.getOperations()[j - 1].body();
-                    newItem.style.display = 'block';
-                    newItem.style.whiteSpace = 'nowrap'; // Keep text in a single line
-                    newItem.style.overflow = 'auto'; // Enable scrolling
-                    newItem.style.minWidth = '100px'; // Set a minimum width
-                    newItem.style.maxWidth = '400px'; // Set a maximum width
-                    newItem.style.textAlign = 'left'; // Align the text to the left
-                    newItem.style.borderLeft = 'none';
-                    newItem.style.borderRight = '2px solid black';
-                    newItem.style.backgroundColor = brasp.getOperations()[j - 1].color;
                     // give each item an id, which is the row, column index
                     newItem.id = `0-${j}`;
                 }
@@ -400,7 +371,7 @@
             if (inputValue === '') {
                 const newColumn = document.createElement('div');
                 newColumn.classList.add('grid-item');
-                newColumn.style.borderBottom = '2px solid black';
+                newColumn.classList.add('vector-header');
                 newColumn.textContent = '';
                 gridContainer.appendChild(newColumn);
 
@@ -408,8 +379,9 @@
                 for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')) - 1; j++) {
                     const newItem = document.createElement('div');
                     newItem.classList.add('grid-item');
+                    newItem.classList.add('vector-cell');
                     newItem.textContent = '';
-                    newItem.style.backgroundColor = brasp.getOperations()[j].color;
+                    newItem.classList.add(brasp.getOperations()[j].type);
                     // give each item an id, which is the row, column index
                     newItem.id = `${1}-${j}`;
                     gridContainer.appendChild(newItem);
@@ -422,7 +394,7 @@
             for (let i = 0; i < inputValue.length; i++) {
                 const newColumn = document.createElement('div');
                 newColumn.classList.add('grid-item');
-                newColumn.style.borderBottom = '2px solid black';
+                newColumn.classList.add('vector-header');
                 newColumn.textContent = inputValue[i];
                 gridContainer.appendChild(newColumn);
 
@@ -430,9 +402,10 @@
                 for (let j = 0; j < parseInt(getComputedStyle(document.documentElement).getPropertyValue('--num-rows')) - 1; j++) {
                     const newItem = document.createElement('div');
                     newItem.classList.add('grid-item');
+                    newItem.classList.add('vector-cell');
                     value = trace[operations_names[j]][i];
                     newItem.textContent = value;
-                    newItem.style.backgroundColor = brasp.getOperations()[j].color;
+                    newItem.classList.add(brasp.getOperations()[j].type);
                     // give each item an id, which is the row, column index
                     newItem.id = `${i + 1}-${j}`;
                     gridContainer.appendChild(newItem);

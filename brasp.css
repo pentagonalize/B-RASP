@@ -22,3 +22,69 @@
     display: inline-block;
     min-width: 20px;
 }
+
+.remove-header {
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+}
+
+.remove-cell {
+    border-right: 2px solid black;
+}
+
+.lhs-header {
+    border-bottom: 2px solid black;
+    border-right: none;
+}
+
+.lhs-cell {
+    display: block;
+    white-space: nowrap; /* Keep text in a single line */
+    overflow: auto;      /* Enable scrolling */
+    max-width: 300px     /* Set a maximum width */
+    border-left: none;
+    border-right: none;
+    text-align = right;  /* add this line to align the text to the right */
+}
+
+.equals-header {
+    border-bottom: 2px solid black;
+    border-left: none;
+    border-right: none;
+    min-width: 0;
+}
+
+.equals-cell {
+    text-align: center; /* add this line to align the text to the right */
+    min-width = 0;      /* set minimal width to 0 */
+    border-left: none;  /* override the left border */
+    border-right: none; /* override the right border */
+}
+
+.rhs-header {
+    border-bottom: 2px solid black;
+    border-left: none;
+    border-right: 2px solid black;
+}
+
+.rhs-cell {
+    display: block;
+    white-space: no-wrap; /* Keep text in a single line */
+    overflow: auto;       /* Enable scrolling */
+    min-width: 100px;     /* Set a minimum width */
+    max-width: 400px;     /* Set a maximum width */
+    text-align: left;     /* Align the text to the left */
+    border-left: none;
+    border-right: 2px solid black;
+}
+
+.vector-header {
+    border-bottom: 2px solid black;
+}
+
+.vector-cell {
+}
+
+.initial   { background-color: #ffcccc; }
+.boolean   { background-color: #c6effc; }
+.attention { background-color: #ffe6cc; }
