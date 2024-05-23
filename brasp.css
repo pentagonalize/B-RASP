@@ -132,7 +132,6 @@
 
 .equals-cell {
     text-align: center;
-    /* add this line to align the text to the right */
     min-width: 0;
     /* set minimal width to 0 */
     border-left: none;
@@ -143,6 +142,9 @@
     padding-right: 0;
     width: 100%;
     font-size: min(1vw, 15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .rhs-header {
