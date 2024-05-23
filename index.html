@@ -480,6 +480,10 @@
                     document.getElementById('recognition').style.color = 'red';
                 }
             }
+            else {
+                document.getElementById('recognition').innerHTML = 'rejected';
+                document.getElementById('recognition').style.color = 'red';
+            }
         }
 
         function addRow() {
@@ -769,6 +773,7 @@
             const inputBox = document.getElementById('inputBox');
             syncGrid(inputBox);
         }
+
     </script>
 
 
