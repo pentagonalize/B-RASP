@@ -47,7 +47,7 @@
     /* Align to the top */
 }
 
-@media screen and (max-width: 1580px) {
+@media screen and (max-width: 1300px) {
     .panels-container {
         grid-template-columns: 1fr;
     }
@@ -77,7 +77,7 @@
 
 
 .remove-column {
-    width: min(75px, 7.5vw);
+    width: 100%;
 }
 
 .remove-header {
@@ -95,7 +95,7 @@
 
 
 .operation-column {
-    width: min(430px, 40vw);
+    width: 100%;
 }
 
 
@@ -173,7 +173,8 @@
 }
 
 .vector-column {
-    width: min(480px, 45vw);
+    /* width: min(480px, 30vw); */
+    width: 100%;
 }
 
 .vector-header {
