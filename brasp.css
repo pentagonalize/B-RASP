@@ -75,6 +75,10 @@
     height: 40px;
 }
 
+#programInput {
+    white-space: pre;
+    overflow-wrap: break-word;
+}
 
 .remove-column {
     width: 100%;
