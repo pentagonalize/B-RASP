@@ -58,7 +58,7 @@
                             <li><a class="dropdown-item" href="#" onclick="addBprecAnosuccC()">{a,b,c}^*a{b,c}^*ba^*</a>
                             </li>
                             <li><a class="dropdown-item" href="#" onclick="addRetrieval()">Retrieval Task</a></li>
-                            <!-- <li><a class="dropdown-item" href="#" onclick="addInductionHead()">Induction Head</a></li> -->
+                            <li><a class="dropdown-item" href="#" onclick="addInductionHead()">Induction Heads</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -317,7 +317,7 @@
             addRow();
             brasp.addOperation(new AttentionOperation("PREDICT_c", "rightmost", "j<i", "(Q_a(i) & PREV_a(j)) | (Q_b(i) & PREV_b(j)) | (Q_c(i) & PREV_c(j))", "Q_c(j)", "0"));
             addRow();
-            brasp.addOperation(new AttentionOperation("CORRECT", "rightmost", "j<i", "1", "(PREDICT_a(j) & Q_a(i)) | (PREDICT_b(j) & Q_b(i)) | (PREDICT_c(j) & Q_c(i))", "0"));
+            brasp.addOperation(new AttentionOperation("Y", "rightmost", "j<i", "1", "(PREDICT_a(j) & Q_a(i)) | (PREDICT_b(j) & Q_b(i)) | (PREDICT_c(j) & Q_c(i))", "0"));
             addRow();
 
             // sync the grid
@@ -366,23 +366,6 @@
             const programInput = document.getElementById('programInput');
             // for each operation, add operation.stringify() to the programInput
             programInput.value = brasp.getOperations().map(operation => operation.stringify()).join('\n');
-        }
-
-
-        function loadPreset() {
-            const preset = document.getElementById('presets').value;
-            if (preset === 'dyck') {
-                addDyck1_depth2();
-            }
-            if (preset === 'stair3') {
-                addStair3();
-            }
-            if (preset === 'ab_plus') {
-                add_ab_plus();
-            }
-            if (preset === 'BprecAnosuccC') {
-                addBprecAnosuccC();
-            }
         }
 
         function syncGrid(input) {
